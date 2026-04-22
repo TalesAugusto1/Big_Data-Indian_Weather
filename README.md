@@ -2,13 +2,73 @@
 
 Enunciado / rubrica da disciplina: [core.md](core.md).
 
+<a id="indice"></a>
+
+## Índice
+
+- [Início rápido: arrancar o stack completo (Docker + Hadoop + Spark)](#inicio-rapido)
+  - [Mapa do stack (visão geral)](#mapa-stack)
+  - [Requisitos rápidos](#requisitos-rapidos)
+  - [Onde ler a seguir](#onde-ler-seguir)
+- [Planeamento do projeto: marcos, histórias e tarefas](#planeamento-projeto)
+  - [Como seguir o fluxo de trabalho](#fluxo-trabalho)
+  - [Como concluir uma tarefa (checklist)](#checklist-tarefa)
+- [Hub de documentação](#hub-documentacao)
+- [Changelog de engenharia](#changelog-engenharia)
+- [Ambiente virtual Python](#ambiente-python)
+  - [Pré-requisitos](#venv-pre-requisitos)
+  - [Criar o venv (uma vez por clone)](#venv-criar)
+  - [Ativar o venv](#venv-ativar)
+  - [Instalar dependências](#venv-instalar-deps)
+  - [Correr (CSV para Parquet)](#venv-csv-parquet)
+  - [Desativar](#venv-desativar)
+  - [Editor (VS Code / Cursor)](#venv-editor)
+
+---
+
+<a id="inicio-rapido"></a>
+
 ## Início rápido: arrancar o stack completo (Docker + Hadoop + Spark)
 
 Este repositório traz um **laboratório numa só máquina** (HDFS, YARN, histórico MapReduce, Spark) via **Docker Compose** na raiz. **Não** precisa de Python nem de ambiente virtual **só** para subir o cluster; Python serve para ferramentas no **host**, como CSV→Parquet.
 
+<a id="mapa-stack"></a>
+
+### Mapa do stack (visão geral)
+
+```mermaid
+flowchart LR
+  subgraph host[Host]
+    data[data/]
+    py[Python opcional]
+  end
+  subgraph cluster[Docker Compose]
+    hdfs[HDFS]
+    yarn[YARN]
+    spark[Spark]
+  end
+  data --> spark
+  py -.-> data
+  hdfs --> yarn --> spark
+```
+
+> [!TIP]
+> Reserve **pelo menos 8 GB de RAM** ao Docker; na primeira subida, aguarde pelos *healthchecks* até `docker compose ps` mostrar os serviços como **healthy**.
+
+<a id="requisitos-rapidos"></a>
+
+### Requisitos rápidos
+
+| O quê | Mínimo / nota |
+|--------|----------------|
+| Docker + Compose | **Compose v2** (`docker compose version`). No Windows costuma ser **Docker Desktop** com **WSL2**. |
+| RAM atribuída ao Docker | **≥ 8 GB** (16 GB ou mais é mais confortável para Hadoop + Spark). |
+| Diretório de trabalho | Raiz do repositório (onde está `docker-compose.yml`). |
+| Dados | `Indian_Weather_Dataset.parquet` em `data/` (ou `data/archive/` + variável no smoke). A pasta `data/` **não** vai para o Git (`.gitignore`). |
+
 1. **Instalar Docker** com **Compose v2** (`docker compose version`). No Windows, **Docker Desktop** com backend WSL2 é o habitual. Atribua ao Docker **pelo menos 8 GB de RAM** (16 GB ou mais é mais confortável para Hadoop + Spark).
 2. **Clonar** o repositório e abrir uma consola na **raiz do repositório** (a pasta que contém `docker-compose.yml`).
-3. **Criar a pasta de dados** (o Compose faz bind-mount no Spark). PowerShell: `New-Item -ItemType Directory -Force -Path .\data | Out-Null`. Coloque **`Indian_Weather_Dataset.parquet`** em `data/` (ou em `data/archive/` e defina `T012_PARQUET_PATH` ao correr o smoke). A pasta `data/` está **no `.gitignore`**; tem de fornecer o conjunto de dados localmente ou gerar Parquet a partir do CSV (ver [Ambiente virtual Python](#ambiente-virtual-python) abaixo).
+3. **Criar a pasta de dados** (o Compose faz bind-mount no Spark). PowerShell: `New-Item -ItemType Directory -Force -Path .\data | Out-Null`. Coloque **`Indian_Weather_Dataset.parquet`** em `data/` (ou em `data/archive/` e defina `T012_PARQUET_PATH` ao correr o smoke). A pasta `data/` está **no `.gitignore`**; tem de fornecer o conjunto de dados localmente ou gerar Parquet a partir do CSV (ver [Ambiente virtual Python](#ambiente-python) abaixo).
 4. **Opcional:** copiar variáveis por defeito: `Copy-Item .env.example .env` (PowerShell) ou `cp .env.example .env` (macOS/Linux). Edite `.env` só se precisar de portas diferentes no host ou de outro `CLUSTER_NAME`.
 5. **Pull e arranque:** `docker compose pull` e depois `docker compose up -d`. Aguarde pelos healthchecks: `docker compose ps` deve mostrar **healthy** nos serviços dependentes (a primeira subida pode demorar vários minutos).
 6. **Verificar UIs:** [HDFS NameNode](http://localhost:9870), [YARN ResourceManager](http://localhost:8088), [Spark Master](http://localhost:8080). Tabela completa: [docker/README.md](docker/README.md#uis-e-health-checks).
@@ -24,9 +84,14 @@ Este repositório traz um **laboratório numa só máquina** (HDFS, YARN, histó
    docker compose exec -e T012_PARQUET_PATH=/dataset/archive/Indian_Weather_Dataset.parquet spark-master /spark/bin/spark-submit /opt/smoke/t012_smoke_parquet.py
    ```
 
+> [!WARNING]
+> O comando `docker compose down -v` **apaga volumes** de dados do cluster (além de parar os contentores). Use só quando quiser repor o HDFS sem dados locais no volume.
+
 8. **Parar:** `docker compose down` (mantém volumes HDFS). Para apagar volumes de dados do cluster: `docker compose down -v`.
 
-**Onde ler a seguir**
+<a id="onde-ler-seguir"></a>
+
+### Onde ler a seguir
 
 | Para quem | Documento |
 |-------------|-------------|
@@ -34,6 +99,12 @@ Este repositório traz um **laboratório numa só máquina** (HDFS, YARN, histó
 | Runbook do laboratório (comandos e troubleshooting com mais detalhe) | [docker/README.md](docker/README.md) |
 | Porquê estas imagens e serviços (T010) | [docs/stack-apache.md](docs/stack-apache.md) |
 | Índice de toda a documentação em `docs/` | [docs/README.md](docs/README.md) |
+
+[↑ Voltar ao índice](#indice)
+
+---
+
+<a id="planeamento-projeto"></a>
 
 ## Planeamento do projeto: marcos, histórias e tarefas
 
@@ -46,12 +117,16 @@ A equipa regista o trabalho em Markdown em **[storyline/](storyline/)**. Essa pa
 | [storyline/storys/README.md](storyline/storys/README.md) | Histórias = Parte 1, 2, 3; critérios de aceitação e tabelas de tarefas |
 | [storyline/tasks/README.md](storyline/tasks/README.md) | Índice completo de tarefas por marco e história |
 
+<a id="fluxo-trabalho"></a>
+
 ### Como seguir o fluxo de trabalho
 
 1. Abrir o **marco ativo** em [storyline/milestones/README.md](storyline/milestones/README.md) (trabalhar **M01** antes de depender de **M02**, e assim por diante).
 2. Abrir a **história** ligada a esse marco em [storyline/storys/](storyline/storys/) e ler critérios de aceitação e a tabela de tarefas.
 3. Abrir ficheiros de **tarefa** em [storyline/tasks/](storyline/tasks/) por ordem de dependências: cada ficheiro tem `depends_on:` no bloco YAML (por exemplo concluir **T010** antes de **T011**).
 4. Quando todas as tarefas do marco estiverem feitas e os critérios de saída cumpridos, considerar o marco concluído e avançar para o seguinte.
+
+<a id="checklist-tarefa"></a>
 
 ### Como concluir uma tarefa (checklist)
 
@@ -68,21 +143,40 @@ Para cada ficheiro como [storyline/tasks/T010-docker-compose-stack.md](storyline
 
 **Caminhos do conjunto de dados** (contexto das tarefas): `data/Indian_Weather_Dataset.parquet`; CSV opcional: `data/archive/Indian_Weather_Dataset.csv`.
 
+---
+
+<a id="hub-documentacao"></a>
+
 ## Hub de documentação
 
-Para além deste ficheiro, **[docs/README.md](docs/README.md)** lista a documentação principal: **guia do stack**, **decisão de arquitetura**, **runbook Docker** e entradas de **changelog**. Os scripts têm documentação em Markdown em **[scripts/README.md](scripts/README.md)** (e um `.md` por script na mesma pasta).
+Para além deste ficheiro:
+
+- **[docs/README.md](docs/README.md)** lista a documentação principal: **guia do stack**, **decisão de arquitetura**, **runbook Docker** e entradas de **changelog**.
+- Os scripts têm documentação em Markdown em **[scripts/README.md](scripts/README.md)** (e um `.md` por script na mesma pasta).
+
+---
+
+<a id="changelog-engenharia"></a>
 
 ## Changelog de engenharia
 
 Implementações relevantes (o que entrou, porquê, como verificar) ficam **um ficheiro Markdown por alteração maior** em [docs/changelog/](docs/changelog/) — índice em [docs/changelog/README.md](docs/changelog/README.md).
 
+---
+
+<a id="ambiente-python"></a>
+
 ## Ambiente virtual Python
 
 Use um ambiente virtual para isolar dependências do Python do sistema.
 
+<a id="venv-pre-requisitos"></a>
+
 ### Pré-requisitos
 
 - Python 3 instalado e disponível como `python` (ou `python3` em macOS/Linux).
+
+<a id="venv-criar"></a>
 
 ### Criar o venv (uma vez por clone)
 
@@ -97,6 +191,8 @@ Em alguns sistemas use `python3`:
 ```bash
 python3 -m venv .venv
 ```
+
+<a id="venv-ativar"></a>
 
 ### Ativar o venv
 
@@ -129,6 +225,8 @@ source .venv/bin/activate
 
 Com o venv ativo, o prompt costuma mostrar `(.venv)`.
 
+<a id="venv-instalar-deps"></a>
+
 ### Instalar dependências
 
 Com o venv ativo:
@@ -137,6 +235,8 @@ Com o venv ativo:
 python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
+
+<a id="venv-csv-parquet"></a>
 
 ### Correr (CSV para Parquet)
 
@@ -155,6 +255,9 @@ cd /caminho/para/BigData
 pip install -r requirements.txt
 python scripts/csv_to_parquet.py
 ```
+
+<details>
+<summary><strong>Referência: flags CLI e exemplos com <code>-i</code> / <code>-o</code></strong></summary>
 
 **Flags opcionais**
 
@@ -177,7 +280,11 @@ python scripts\csv_to_parquet.py -i data\archive\Indian_Weather_Dataset.csv -o d
 python scripts/csv_to_parquet.py -i data/archive/Indian_Weather_Dataset.csv -o data/archive/Indian_Weather_Dataset.parquet
 ```
 
+</details>
+
 O script foi testado com um CSV pequeno. Uma execução completa no CSV real do Indian Weather pode demorar muito porque o ficheiro fonte é muito grande.
+
+<a id="venv-desativar"></a>
 
 ### Desativar
 
@@ -185,6 +292,12 @@ O script foi testado com um CSV pequeno. Uma execução completa no CSV real do 
 deactivate
 ```
 
+<a id="venv-editor"></a>
+
 ### Editor (VS Code / Cursor)
 
 Escolha o interpretador `.venv\Scripts\python.exe` (Windows) ou `.venv/bin/python` (macOS/Linux): **Python: Select Interpreter** na Paleta de Comandos para que terminais e depuração usem este ambiente.
+
+---
+
+[↑ Voltar ao índice](#indice)
