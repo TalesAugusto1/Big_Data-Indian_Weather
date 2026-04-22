@@ -1,0 +1,183 @@
+# Apache Hadoop (HDFS + YARN) + Spark — local lab stack (bde2020).
+# See docker/README.md and docs/stack-apache.md
+
+services:
+  namenode:
+    image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
+    container_name: namenode
+    restart: unless-stopped
+    ports:
+      - "${NAMENODE_HTTP_PORT:-9870}:9870"
+      - "${NAMENODE_RPC_PORT:-9000}:9000"
+    volumes:
+      - hadoop_namenode:/hadoop/dfs/name
+    environment:
+      - CLUSTER_NAME=${CLUSTER_NAME:-bigdata-lab}
+    env_file:
+      - ./docker/hadoop.env
+    networks:
+      - bigdata
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:9870/ >/dev/null || exit 1"]
+      interval: 20s
+      timeout: 10s
+      retries: 15
+      start_period: 120s
+
+  datanode:
+    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+    container_name: datanode
+    restart: unless-stopped
+    ports:
+      - "${DATANODE_HTTP_PORT:-9864}:9864"
+    volumes:
+      - hadoop_datanode:/hadoop/dfs/data
+    environment:
+      SERVICE_PRECONDITION: "namenode:9870"
+    env_file:
+      - ./docker/hadoop.env
+    networks:
+      - bigdata
+    depends_on:
+      namenode:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:9864/ >/dev/null || exit 1"]
+      interval: 20s
+      timeout: 10s
+      retries: 15
+      start_period: 120s
+
+  resourcemanager:
+    image: bde2020/hadoop-resourcemanager:2.0.0-hadoop3.2.1-java8
+    container_name: resourcemanager
+    restart: unless-stopped
+    ports:
+      - "${YARN_RM_HTTP_PORT:-8088}:8088"
+    environment:
+      SERVICE_PRECONDITION: "namenode:9000 namenode:9870 datanode:9864"
+    env_file:
+      - ./docker/hadoop.env
+    networks:
+      - bigdata
+    depends_on:
+      namenode:
+        condition: service_healthy
+      datanode:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:8088/ws/v1/cluster/info >/dev/null || exit 1"]
+      interval: 25s
+      timeout: 10s
+      retries: 15
+      start_period: 120s
+
+  nodemanager:
+    image: bde2020/hadoop-nodemanager:2.0.0-hadoop3.2.1-java8
+    container_name: nodemanager
+    restart: unless-stopped
+    ports:
+      - "${YARN_NM_HTTP_PORT:-8042}:8042"
+    environment:
+      SERVICE_PRECONDITION: "namenode:9000 namenode:9870 datanode:9864 resourcemanager:8088"
+    env_file:
+      - ./docker/hadoop.env
+    networks:
+      - bigdata
+    depends_on:
+      resourcemanager:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:8042/ >/dev/null || exit 1"]
+      interval: 25s
+      timeout: 10s
+      retries: 12
+      start_period: 120s
+
+  historyserver:
+    image: bde2020/hadoop-historyserver:2.0.0-hadoop3.2.1-java8
+    container_name: historyserver
+    restart: unless-stopped
+    ports:
+      - "${YARN_HISTORYSERVER_HTTP_PORT:-8188}:8188"
+    volumes:
+      - hadoop_historyserver:/hadoop/yarn/timeline
+    environment:
+      SERVICE_PRECONDITION: "namenode:9000 namenode:9870 datanode:9864 resourcemanager:8088"
+    env_file:
+      - ./docker/hadoop.env
+    networks:
+      - bigdata
+    depends_on:
+      resourcemanager:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:8188/ >/dev/null || exit 1"]
+      interval: 25s
+      timeout: 10s
+      retries: 10
+      start_period: 120s
+
+  spark-master:
+    image: bde2020/spark-master:3.2.1-hadoop3.2
+    container_name: spark-master
+    restart: unless-stopped
+    volumes:
+      - ./data:/dataset:ro
+      - ./scripts:/opt/smoke:ro
+    ports:
+      - "${SPARK_MASTER_WEB_PORT:-8080}:8080"
+      - "${SPARK_MASTER_PORT:-7077}:7077"
+    environment:
+      - INIT_DAEMON_STEP=setup_spark
+      - CORE_CONF_fs_defaultFS=hdfs://namenode:9000
+    env_file:
+      - ./docker/hadoop.env
+    networks:
+      - bigdata
+    depends_on:
+      namenode:
+        condition: service_healthy
+      datanode:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:8080/ >/dev/null || exit 1"]
+      interval: 20s
+      timeout: 10s
+      retries: 12
+      start_period: 90s
+
+  spark-worker:
+    image: bde2020/spark-worker:3.2.1-hadoop3.2
+    container_name: spark-worker
+    restart: unless-stopped
+    volumes:
+      - ./data:/dataset:ro
+      - ./scripts:/opt/smoke:ro
+    ports:
+      - "${SPARK_WORKER_WEB_PORT:-8081}:8081"
+    environment:
+      - SPARK_MASTER=spark://spark-master:7077
+      - CORE_CONF_fs_defaultFS=hdfs://namenode:9000
+    env_file:
+      - ./docker/hadoop.env
+    networks:
+      - bigdata
+    depends_on:
+      spark-master:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:8081/ >/dev/null || exit 1"]
+      interval: 20s
+      timeout: 10s
+      retries: 12
+      start_period: 90s
+
+volumes:
+  hadoop_namenode:
+  hadoop_datanode:
+  hadoop_historyserver:
+
+networks:
+  bigdata:
+    driver: bridge

@@ -4,11 +4,13 @@
 id: T011
 story: S01
 milestone: M01
-status: Todo
+status: Done
 depends_on: [T010]
 artifacts:
   - docker-compose.yml
-  - README com comandos up/down/logs
+  - docker/hadoop.env
+  - .env.example
+  - docker/README.md
 ```
 
 ## Objetivo
@@ -17,15 +19,18 @@ Ter arquivos **Docker Compose** (ou stack equivalente) que sobem o ambiente de f
 
 ## Checklist
 
-- [ ] `docker compose up` (ou comando documentado) sobe sem passos manuais não documentados.
-- [ ] Variáveis sensíveis apenas em `.env.example` (sem segredos reais no Git).
-- [ ] Para cada serviço crítico: URL/porta ou comando `curl`/health documentado.
-- [ ] Seção “Troubleshooting” com 2–3 falhas comuns (memória, portas).
+- [x] `docker compose up` (ou comando documentado) sobe sem passos manuais não documentados.
+- [x] Variáveis sensíveis apenas em `.env.example` (sem segredos reais no Git); `.env` ignorado no Git.
+- [x] Para cada serviço crítico: URL/porta ou comando `curl`/health documentado.
+- [x] Seção “Troubleshooting” com 2–3 falhas comuns (memória, portas).
 
 ## Evidence
 
-- Trecho de log de subida bem-sucedida ou screenshot (opcional).
-- Caminhos dos arquivos Compose no repositório.
+- Compose na raiz: [docker-compose.yml](../../docker-compose.yml)
+- Config Hadoop: [docker/hadoop.env](../../docker/hadoop.env)
+- Variáveis de exemplo: [.env.example](../../.env.example)
+- Documentação: [docker/README.md](../../docker/README.md)
+- Validação de sintaxe: `docker compose config` (executado com sucesso no ambiente de desenvolvimento).
 
 ## Links
 
