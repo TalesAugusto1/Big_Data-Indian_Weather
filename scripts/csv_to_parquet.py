@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """
-Stream a CSV to Parquet without loading the whole file into memory.
+Converte CSV para Parquet em streaming (sem carregar o ficheiro inteiro na RAM).
 
-Suited for very large files (e.g. Indian Weather dataset).
-Requires: pip install -r requirements.txt
+Adequado a ficheiros muito grandes (ex.: Indian Weather). Requer: pip install -r requirements.txt
+
+Documentação: scripts/csv_to_parquet.md (na mesma pasta que este .py).
 """
 from __future__ import annotations
 

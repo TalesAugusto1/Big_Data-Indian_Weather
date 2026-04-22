@@ -19,6 +19,10 @@ Comece aqui se for novo no repositório. A documentação do projeto está **em 
 2. **Correr Hadoop + Spark no Docker** → [guides/stack-completo-e-dados.md](guides/stack-completo-e-dados.md) + [../docker/README.md](../docker/README.md) (T011–T012).
 3. **Converter CSV para Parquet no host** → [../README.md](../README.md) (secção Python) e [changelog/2026-04-21-csv-to-parquet-streaming.md](changelog/2026-04-21-csv-to-parquet-streaming.md).
 
+## Scripts (`scripts/`)
+
+- [../scripts/README.md](../scripts/README.md) — índice e ligações a `csv_to_parquet.md` e `t012_smoke_parquet.md`.
+
 ## Acompanhamento do curso
 
 - [../storyline/README.md](../storyline/README.md) — marcos, histórias, tarefas.

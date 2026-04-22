@@ -5,6 +5,8 @@ Smoke T012: ler Parquet no contentor Spark (bind mount em /dataset).
 Variáveis de ambiente:
   T012_PARQUET_PATH  Caminho dentro do contentor (por defeito: /dataset/Indian_Weather_Dataset.parquet)
   T012_FULL_COUNT    Definir como "1" para executar df.count() (varredura completa — lenta em ficheiros enormes)
+
+Documentação: scripts/t012_smoke_parquet.md (na mesma pasta que este .py).
 """
 from __future__ import annotations
 
