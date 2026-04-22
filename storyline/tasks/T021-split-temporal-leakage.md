@@ -17,7 +17,7 @@ Definir **treino/validação/teste** de forma **reprodutível**, priorizando **s
 ## Checklist
 
 - [x] Descrever colunas usadas para ordenar e cortar no tempo (`datetime`; ordenação mergesort ascendente).
-- [x] Fixar **seed** e versão de biblioteca se necessário para reprodutibilidade (`--seed` por defeito 42; pandas impresso no output).
+- [x] Fixar **seed** e versão de biblioteca se necessário para reprodutibilidade (`--seed` por defeito 42; pyarrow impresso no output).
 - [x] Listar features que não podem existir no treino se calculadas com futuro (secção anti-leakage no output do script).
 - [x] Tamanhos aproximados de cada split (tabela Markdown no stdout).
 

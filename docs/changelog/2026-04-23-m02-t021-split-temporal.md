@@ -6,7 +6,7 @@
 
 ## Resumo
 
-Script **`split_temporal.py`** no host: lê apenas a coluna **`datetime`** do Parquet, ordena (mergesort estável), aplica frações **treino / validação / teste** (por defeito 0,70 / 0,15 / 0,15), imprime tabela Markdown com contagens e limites temporais, checagens de fronteira e lista de **riscos de data leakage**. Dependência **pandas** adicionada ao projeto.
+Script **`split_temporal.py`** no host: lê apenas a coluna **`datetime`** do Parquet, ordena de forma estável com **PyArrow**, aplica frações **treino / validação / teste** (por defeito 0,70 / 0,15 / 0,15), imprime tabela Markdown com contagens e limites temporais, checagens de fronteira e lista de **riscos de data leakage**. Implementação sem pandas.
 
 ## Motivação
 
@@ -16,7 +16,7 @@ Fechar **T021** como pré-requisito de **T022** (pré-processamento) e **T024** 
 
 | Item | Detalhe |
 |------|---------|
-| [requirements.txt](../../requirements.txt) | `pandas>=2.0.0` |
+| [requirements.txt](../../requirements.txt) | Mantido só com `pyarrow>=14.0.0` (sem pandas) |
 | [scripts/split_temporal.py](../../scripts/split_temporal.py) | CLI, split temporal, output Markdown + leakage |
 | [scripts/split_temporal.md](../../scripts/split_temporal.md) | Documentação do script |
 | [scripts/README.md](../../scripts/README.md) | Entrada na tabela de scripts |

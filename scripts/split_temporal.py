@@ -14,7 +14,9 @@ import random
 import sys
 from pathlib import Path
 
-import pandas as pd
+import pyarrow as pa
+import pyarrow.compute as pc
+import pyarrow.parquet as pq
 
 
 def _split_sizes(n: int, train: float, val: float, test: float) -> tuple[int, int, int]:
@@ -26,6 +28,12 @@ def _split_sizes(n: int, train: float, val: float, test: float) -> tuple[int, in
     if n_test < 0:
         raise ValueError("Frações inválidas: contagens negativas após arredondamento.")
     return n_train, n_val, n_test
+
+
+def _format_scalar(value: pa.Scalar | None) -> str:
+    if value is None or not value.is_valid:
+        return "N/A"
+    return str(value.as_py())
 
 
 def main() -> int:
@@ -79,19 +87,33 @@ def main() -> int:
         return 1
 
     try:
-        df = pd.read_parquet(src, columns=["datetime"], engine="pyarrow")
+        table = pq.read_table(src, columns=["datetime"])
     except Exception as e:
         print(f"ERRO ao ler Parquet: {e}", file=sys.stderr)
         return 1
 
-    if df.empty:
+    if table.num_rows == 0:
         print("ERRO: dataset vazio.", file=sys.stderr)
         return 1
 
-    df["datetime"] = pd.to_datetime(df["datetime"], utc=False)
-    df = df.sort_values("datetime", kind="mergesort").reset_index(drop=True)
+    if "datetime" not in table.column_names:
+        print("ERRO: coluna 'datetime' não encontrada no Parquet.", file=sys.stderr)
+        return 1
 
-    n = len(df)
+    dt = table.column("datetime").combine_chunks()
+    dt_type = dt.type
+    if not pa.types.is_timestamp(dt_type):
+        # Tenta converter strings/inteiros para timestamp de forma explícita.
+        try:
+            dt = pc.cast(dt, pa.timestamp("us"), safe=False)
+        except Exception as e:
+            print(f"ERRO: não foi possível converter 'datetime' para timestamp: {e}", file=sys.stderr)
+            return 1
+
+    order = pc.sort_indices(dt)
+    dt_sorted = pc.take(dt, order)
+
+    n = len(dt_sorted)
     n_train, n_val, n_test = _split_sizes(n, args.train, args.val, args.test)
 
     i0 = 0
@@ -99,17 +121,22 @@ def main() -> int:
     i2 = i1 + n_val
 
     parts = [
-        ("treino", df.iloc[i0:i1]),
-        ("validacao", df.iloc[i1:i2]),
-        ("teste", df.iloc[i2:]),
+        ("treino", dt_sorted.slice(i0, n_train)),
+        ("validacao", dt_sorted.slice(i1, n_val)),
+        ("teste", dt_sorted.slice(i2, n_test)),
     ]
 
     print("## Split temporal (T021)\n")
     print("| split | linhas | min(datetime) | max(datetime) |")
     print("|-------|--------|-----------------|---------------|")
     for name, part in parts:
-        mn = part["datetime"].min()
-        mx = part["datetime"].max()
+        if len(part) == 0:
+            mn = mx = "N/A"
+        else:
+            mm = pc.min_max(part)
+            mmv = mm.as_py() if mm.is_valid else None
+            mn = str(mmv["min"]) if mmv else "N/A"
+            mx = str(mmv["max"]) if mmv else "N/A"
         print(f"| {name} | {len(part):,} | {mn} | {mx} |")
 
     print(f"\n**Total linhas:** {n:,}")
@@ -117,23 +144,39 @@ def main() -> int:
         f"**Frações pedidas:** treino={args.train}, val={args.val}, teste={args.test} "
         f"(soma={args.train + args.val + args.test:.6f})"
     )
-    print(f"**Seed:** {args.seed} (sem amostragem aleatória; ordenação mergesort por `datetime`)")
+    print(f"**Seed:** {args.seed} (sem amostragem aleatória; ordenação estável por `datetime`)")
     print(f"**Ficheiro:** `{src}`\n")
 
     print("### Checagem temporal (fronteiras)\n")
-    train_max = parts[0][1]["datetime"].max()
-    val_min = parts[1][1]["datetime"].min()
-    val_max = parts[1][1]["datetime"].max()
-    test_min = parts[2][1]["datetime"].min()
-    if len(parts[1][1]) > 0:
+    train_part = parts[0][1]
+    val_part = parts[1][1]
+    test_part = parts[2][1]
+
+    train_mm = pc.min_max(train_part).as_py() if len(train_part) > 0 else None
+    val_mm = pc.min_max(val_part).as_py() if len(val_part) > 0 else None
+    test_mm = pc.min_max(test_part).as_py() if len(test_part) > 0 else None
+
+    train_max = train_mm["max"] if train_mm else None
+    val_min = val_mm["min"] if val_mm else None
+    val_max = val_mm["max"] if val_mm else None
+    test_min = test_mm["min"] if test_mm else None
+
+    if len(val_part) > 0 and train_max is not None and val_min is not None:
         ok_tv = train_max <= val_min
-        print(f"- max(treino) <= min(validacao): **{ok_tv}** (treino_max={train_max}, val_min={val_min})")
+        print(
+            f"- max(treino) <= min(validacao): **{ok_tv}** "
+            f"(treino_max={_format_scalar(pa.scalar(train_max))}, val_min={_format_scalar(pa.scalar(val_min))})"
+        )
     else:
         print("- validacao vazia: ignorar checagem treino/val.")
-    if len(parts[1][1]) > 0 and len(parts[2][1]) > 0:
+
+    if len(val_part) > 0 and len(test_part) > 0 and val_max is not None and test_min is not None:
         ok_vte = val_max <= test_min
-        print(f"- max(validacao) <= min(teste): **{ok_vte}** (val_max={val_max}, test_min={test_min})")
-    elif len(parts[2][1]) == 0:
+        print(
+            f"- max(validacao) <= min(teste): **{ok_vte}** "
+            f"(val_max={_format_scalar(pa.scalar(val_max))}, test_min={_format_scalar(pa.scalar(test_min))})"
+        )
+    elif len(test_part) == 0:
         print("- teste vazio: ignorar checagem val/teste.")
 
     print("\n### Riscos de data leakage (evitar nas fases seguintes)\n")
@@ -148,7 +191,7 @@ def main() -> int:
         print(f"- {b}")
 
     print("\n**Versões (registar na evidência):**")
-    print(f"- pandas {pd.__version__}")
+    print(f"- pyarrow {pa.__version__}")
 
     return 0
 

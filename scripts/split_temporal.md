@@ -2,11 +2,11 @@
 
 ## Objetivo
 
-Definir cortes **treino / validação / teste** de forma **reprodutível**, ordenando o dataset pela coluna **`datetime`** (ordem ascendente, `mergesort` estável) e aplicando **frações fixas** ao número de linhas após ordenação. O script lê **apenas** `datetime` do Parquet para reduzir memória.
+Definir cortes **treino / validação / teste** de forma **reprodutível**, ordenando o dataset pela coluna **`datetime`** (ordem ascendente estável) e aplicando **frações fixas** ao número de linhas após ordenação. O script lê **apenas** `datetime` do Parquet para reduzir memória.
 
 ## Onde corre
 
-No **host**, com venv e `pip install -r requirements.txt` (precisa de **pandas** + **pyarrow**).
+No **host**, com venv e `pip install -r requirements.txt` (precisa de **pyarrow**).
 
 ## Uso
 
@@ -41,7 +41,7 @@ python scripts\split_temporal.py --train 0.8 --val 0.1 --test 0.1 --seed 42
 - Tabela Markdown: split, número de linhas, `min(datetime)`, `max(datetime)`.
 - Checagens textuais nas fronteiras treino→validação→teste.
 - Lista de **riscos de data leakage** a evitar nas fases seguintes (pré-processamento, modelagem).
-- Versão do **pandas** (registar na evidência da T021).
+- Versão do **pyarrow** (registar na evidência da T021).
 
 ## Colunas usadas
 
