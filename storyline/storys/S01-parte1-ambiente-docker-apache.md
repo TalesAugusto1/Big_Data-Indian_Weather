@@ -38,7 +38,7 @@ Entregar um **ambiente reproduzível** que represente um **cluster Big Data** us
 
 | Task ID | Título | Owner | Status |
 |---------|--------|-------|--------|
-| T010 | Escolha e documentação do stack Apache | | Todo |
+| T010 | Escolha e documentação do stack Apache | | Done |
 | T011 | Compose reproduzível e health checks | | Todo |
 | T012 | Dados montados/ingeridos + leitura mínima | | Todo |
 

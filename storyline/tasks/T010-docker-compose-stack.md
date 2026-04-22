@@ -4,10 +4,10 @@
 id: T010
 story: S01
 milestone: M01
-status: Todo
+status: Done
 depends_on: []
 artifacts:
-  - docs/stack-apache.md   # criar quando existir; ou seção no README do docker/
+  - docs/stack-apache.md
 ```
 
 ## Objetivo
@@ -16,15 +16,16 @@ Definir quais componentes do **ecossistema Apache** entram no ambiente (ex.: HDF
 
 ## Checklist
 
-- [ ] Listar requisitos mínimos do curso para “cluster simulado”.
-- [ ] Escolher imagens oficiais ou comunidade com versão fixa (pin).
-- [ ] Documentar topologia (quais containers, dependências entre si).
-- [ ] Registrar decisões rejeitadas em uma linha (opcional, mas útil).
+- [x] Listar requisitos mínimos do curso para “cluster simulado”.
+- [x] Escolher imagens oficiais ou comunidade com versão fixa (pin).
+- [x] Documentar topologia (quais containers, dependências entre si).
+- [x] Registrar decisões rejeitadas em uma linha (opcional, mas útil).
 
 ## Evidence
 
-- Link ou caminho do documento onde o stack está descrito.
-- Tabela serviço → imagem → versão.
+- Documento: [docs/stack-apache.md](../../docs/stack-apache.md)
+- Tabela **Serviço → imagem Docker (tag fixa) → papel → portas** incluída no doc; stack **bde2020** Hadoop `2.0.0-hadoop3.2.1-java8` + Spark `3.2.1-hadoop3.2`.
+- Diagrama mermaid de topologia no mesmo arquivo.
 
 ## Links
 
