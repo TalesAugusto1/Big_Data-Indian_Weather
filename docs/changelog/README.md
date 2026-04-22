@@ -12,6 +12,7 @@ Esta pasta regista **desenvolvimento relevante** no repositório (funcionalidade
 
 | Data | Slug | Resumo |
 |------|------|--------|
+| 2026-04-22 | [m02-t020-dataset-aprovacao](2026-04-22-m02-t020-dataset-aprovacao.md) | M02 / T020: evidência de aprovação, alvo `rain_label`, critério >1 GB (CSV+Parquet) |
 | 2026-04-21 | [t012-dataset-smoke](2026-04-21-t012-dataset-smoke.md) | Mount `./data` no Spark + smoke Parquet (M01 / T012) |
 | 2026-04-21 | [docker-compose-m01](2026-04-21-docker-compose-m01.md) | `docker-compose.yml` + `docker/hadoop.env` + health checks (M01 / T011) |
 | 2026-04-21 | [stack-apache-m01](2026-04-21-stack-apache-m01.md) | Documentação do stack Docker Apache (HDFS, YARN, Spark) para M01 / T010 (`docs/stack-apache.md`) |
