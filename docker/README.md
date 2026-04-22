@@ -88,6 +88,59 @@ curl -fsS http://localhost:8080/ | Out-Null
 4. **NodeManager ou RM reiniciam em loop**  
    Memória insuficiente: reduza ainda mais `YARN_CONF_yarn_nodemanager_resource_memory___mb` e limites `MAPRED_CONF_*` em `docker/hadoop.env`, depois `docker compose down -v` e suba de novo (apaga dados HDFS).
 
-## Próximo passo (T012)
+## T012 — Dados montados + smoke Parquet (Spark)
 
-Ingerir ou montar `data/Indian_Weather_Dataset.parquet` e executar um smoke test (ex.: Spark `read.parquet` + `count`) a partir deste ambiente.
+### Desenho
+
+- O host expõe o diretório **`./data`** como **`/dataset`** (read-only) nos containers **`spark-master`** e **`spark-worker`**.
+- Os scripts do repositório ficam em **`/opt/smoke`** (read-only), incluindo [`../scripts/t012_smoke_parquet.py`](../scripts/t012_smoke_parquet.py).
+- **URI por defeito no smoke:** `file:///dataset/Indian_Weather_Dataset.parquet`  
+  Alternativa comum: `file:///dataset/archive/Indian_Weather_Dataset.parquet` (definir `T012_PARQUET_PATH`).
+
+No **Docker Desktop (Windows)**, o caminho `./data` é relativo à pasta onde está o `docker-compose.yml`. Crie a pasta se ainda não existir:
+
+```powershell
+New-Item -ItemType Directory -Force -Path .\data | Out-Null
+```
+
+### Pré-requisitos
+
+- Stack no ar: `docker compose up -d` e serviços Spark **healthy**.
+- Ficheiro Parquet presente no host, por exemplo:
+  - `data/Indian_Weather_Dataset.parquet`, ou
+  - `data/archive/Indian_Weather_Dataset.parquet` (ajuste `T012_PARQUET_PATH` abaixo).
+
+### Smoke test (leitura mínima)
+
+Por defeito o script imprime **schema**, **1 linha** e `limit(1).count()` (evita `count()` completo em ficheiros gigantes). Para `count()` total (varre tudo — pode demorar):
+
+```powershell
+docker compose exec -e T012_FULL_COUNT=1 spark-master /spark/bin/spark-submit /opt/smoke/t012_smoke_parquet.py
+```
+
+Caminho alternativo do ficheiro:
+
+```powershell
+docker compose exec -e T012_PARQUET_PATH=/dataset/archive/Indian_Weather_Dataset.parquet spark-master /spark/bin/spark-submit /opt/smoke/t012_smoke_parquet.py
+```
+
+Comando padrão:
+
+```powershell
+docker compose exec spark-master /spark/bin/spark-submit /opt/smoke/t012_smoke_parquet.py
+```
+
+Se `/spark/bin/spark-submit` não existir na imagem, experimente `/opt/spark/bin/spark-submit` (verificar com `docker compose exec spark-master ls /spark/bin`).
+
+### Opcional — copiar para o HDFS (narrativa cluster)
+
+O container **namenode** não monta `./data` por defeito. Copie do host para o NameNode e depois para o HDFS:
+
+```powershell
+docker cp .\data\Indian_Weather_Dataset.parquet namenode:/tmp/Indian_Weather_Dataset.parquet
+docker compose exec namenode hdfs dfs -mkdir -p /user/lab
+docker compose exec namenode hdfs dfs -put -f /tmp/Indian_Weather_Dataset.parquet /user/lab/
+docker compose exec namenode hdfs dfs -ls /user/lab
+```
+
+Leitura via Spark com URI **`hdfs://namenode:9000/user/lab/Indian_Weather_Dataset.parquet`** (definir `T012_PARQUET_PATH` em `docker compose exec -e ...`).

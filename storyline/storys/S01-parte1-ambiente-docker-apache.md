@@ -3,7 +3,7 @@
 ```yaml
 id: S01
 milestone_primary: M01
-status: Todo
+status: Done
 ```
 
 ## Enunciado (referência)
@@ -30,9 +30,9 @@ Entregar um **ambiente reproduzível** que represente um **cluster Big Data** us
 
 ## Definition of Done
 
-- [ ] Stack sobe com um comando documentado (`docker compose up` ou equivalente).
-- [ ] Documentação lista serviços, portas e como validar saúde.
-- [ ] Task **T012** em **Done** com evidência de leitura dos dados no ambiente.
+- [x] Stack sobe com um comando documentado (`docker compose up` ou equivalente).
+- [x] Documentação lista serviços, portas e como validar saúde.
+- [x] Task **T012** em **Done** com evidência de leitura dos dados no ambiente.
 
 ## Índice de tasks
 
@@ -40,7 +40,7 @@ Entregar um **ambiente reproduzível** que represente um **cluster Big Data** us
 |---------|--------|-------|--------|
 | T010 | Escolha e documentação do stack Apache | | Done |
 | T011 | Compose reproduzível e health checks | | Done |
-| T012 | Dados montados/ingeridos + leitura mínima | | Todo |
+| T012 | Dados montados/ingeridos + leitura mínima | | Done |
 
 Arquivos: [../tasks/T010-docker-compose-stack.md](../tasks/T010-docker-compose-stack.md), [../tasks/T011-compose-healthchecks.md](../tasks/T011-compose-healthchecks.md), [../tasks/T012-dataset-no-stack.md](../tasks/T012-dataset-no-stack.md).
 

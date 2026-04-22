@@ -69,7 +69,10 @@ flowchart TB
 - **`.env.example`**: `CLUSTER_NAME` e portas opcionais; copiar para `.env` (ficheiro ignorado pelo Git).
 - **`docker/README.md`**: comandos `up`/`down`/`logs`, tabela de UIs e troubleshooting.
 
-A **T012** fará ingestão ou mount do dataset e um smoke test (ex.: `spark-submit` ou `spark-shell` com `read.parquet` + `count`).
+## T012 (implementado) — Dados e smoke Parquet
+
+- Mount `./data` → `/dataset` (ro) e `./scripts` → `/opt/smoke` (ro) nos serviços Spark no **`docker-compose.yml`**.
+- Smoke: **`scripts/t012_smoke_parquet.py`** + secção **T012** em **`docker/README.md`** (URI `file:///dataset/...`, opção HDFS com `docker cp`).
 
 ## Referências
 

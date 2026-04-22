@@ -122,6 +122,9 @@ services:
     image: bde2020/spark-master:3.2.1-hadoop3.2
     container_name: spark-master
     restart: unless-stopped
+    volumes:
+      - ./data:/dataset:ro
+      - ./scripts:/opt/smoke:ro
     ports:
       - "${SPARK_MASTER_WEB_PORT:-8080}:8080"
       - "${SPARK_MASTER_PORT:-7077}:7077"
@@ -148,6 +151,9 @@ services:
     image: bde2020/spark-worker:3.2.1-hadoop3.2
     container_name: spark-worker
     restart: unless-stopped
+    volumes:
+      - ./data:/dataset:ro
+      - ./scripts:/opt/smoke:ro
     ports:
       - "${SPARK_WORKER_WEB_PORT:-8081}:8081"
     environment:
