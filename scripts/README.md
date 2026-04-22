@@ -5,6 +5,7 @@ Ferramentas de linha de comandos para preparar dados e validar o stack Docker (M
 | Script | Onde corre | Documentação |
 |--------|------------|----------------|
 | [`csv_to_parquet.py`](csv_to_parquet.py) | **Host** (Python + venv) | [csv_to_parquet.md](csv_to_parquet.md) |
+| [`split_temporal.py`](split_temporal.py) | **Host** (Python + venv; M02 / T021) | [split_temporal.md](split_temporal.md) |
 | [`t012_smoke_parquet.py`](t012_smoke_parquet.py) | **Dentro do contentor Spark** (via `spark-submit`) | [t012_smoke_parquet.md](t012_smoke_parquet.md) |
 
 ## Pré-requisito comum (host)

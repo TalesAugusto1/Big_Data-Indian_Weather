@@ -33,7 +33,7 @@ Definir formalmente a **tarefa de aprendizado** (alvo e tipo), obter **aprovaç�
 ## Definition of Done
 
 - [x] Alvo e tipo de problema definidos e aprovados (**T020** Done).
-- [ ] Split e validação sem vazamento temporal documentados (**T021** Done).
+- [x] Split e validação sem vazamento temporal documentados (**T021** Done).
 - [ ] Pipeline de features acordado (**T022** Done).
 - [ ] Plano de imbalance completo ou N/A justificado (**T023** Done).
 - [ ] Relatório/notebook de EDA entregue (**T024** Done).
@@ -43,7 +43,7 @@ Definir formalmente a **tarefa de aprendizado** (alvo e tipo), obter **aprovaç�
 | Task ID | Título | Owner | Status |
 |---------|--------|-------|--------|
 | T020 | Dataset, alvo e aprovação do professor | | Done |
-| T021 | Split reproduzível e checagem de vazamento | | Todo |
+| T021 | Split reproduzível e checagem de vazamento | | Done |
 | T022 | Especificação do pré-processamento | | Todo |
 | T023 | Desequilíbrio de classes | | Todo |
 | T024 | EDA e figuras | | Todo |
