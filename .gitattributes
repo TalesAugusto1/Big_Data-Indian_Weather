@@ -1,0 +1,2 @@
+# Treat Markdown as text so merges get normal conflict markers (avoid UTF-16 editors marking as binary).
+*.md text
