@@ -62,13 +62,12 @@ flowchart TB
 - **Nuvem gerenciada (EMR, Dataproc, Databricks)**: não simula cluster **local** com Docker no repositório.
 - **Bitnami / Apache oficial**: alternativas válidas; **bde2020** foi escolhida por abundância de exemplos `docker-compose` públicos (facilita a **T011**).
 
-## Próximo passo (T011)
+## T011 (implementado) — Compose e health checks
 
-Implementar **`docker-compose.yml`** (ou equivalente) na raiz do projeto ou em `docker/`, com:
-
-- rede comum entre serviços;
-- variáveis de ambiente exigidas pelas imagens `bde2020` (ex.: `CORE_CONF_fs_defaultFS`, `YARN_CONF_yarn_log___aggregation___enable`, etc., conforme o repositório de referência [big-data-europe/docker-hadoop](https://github.com/big-data-europe/docker-hadoop));
-- health checks / ordem de subida documentada.
+- **`docker-compose.yml`** na **raiz** do repositório: rede `bigdata`, serviços HDFS + YARN + HistoryServer + Spark (pins iguais à tabela acima), `healthcheck` com `curl` e `depends_on` com `service_healthy`.
+- **`docker/hadoop.env`**: variáveis `CORE_CONF_*`, `HDFS_CONF_*`, `YARN_CONF_*`, `MAPRED_CONF_*` (base [big-data-europe/docker-hadoop](https://github.com/big-data-europe/docker-hadoop)), com **memória reduzida** para laptops.
+- **`.env.example`**: `CLUSTER_NAME` e portas opcionais; copiar para `.env` (ficheiro ignorado pelo Git).
+- **`docker/README.md`**: comandos `up`/`down`/`logs`, tabela de UIs e troubleshooting.
 
 A **T012** fará ingestão ou mount do dataset e um smoke test (ex.: `spark-submit` ou `spark-shell` com `read.parquet` + `count`).
 

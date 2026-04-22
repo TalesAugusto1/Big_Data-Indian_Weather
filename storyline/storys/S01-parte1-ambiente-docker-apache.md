@@ -39,7 +39,7 @@ Entregar um **ambiente reproduzível** que represente um **cluster Big Data** us
 | Task ID | Título | Owner | Status |
 |---------|--------|-------|--------|
 | T010 | Escolha e documentação do stack Apache | | Done |
-| T011 | Compose reproduzível e health checks | | Todo |
+| T011 | Compose reproduzível e health checks | | Done |
 | T012 | Dados montados/ingeridos + leitura mínima | | Todo |
 
 Arquivos: [../tasks/T010-docker-compose-stack.md](../tasks/T010-docker-compose-stack.md), [../tasks/T011-compose-healthchecks.md](../tasks/T011-compose-healthchecks.md), [../tasks/T012-dataset-no-stack.md](../tasks/T012-dataset-no-stack.md).
