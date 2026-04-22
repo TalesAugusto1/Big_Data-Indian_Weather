@@ -6,6 +6,8 @@ Este diretório contém **`hadoop.env`** (configuração Hadoop/YARN/MapReduce) 
 
 Arquitetura e pins de imagem: [../docs/stack-apache.md](../docs/stack-apache.md).
 
+Guia operacional aprofundado (clone → dados → smoke → HDFS opcional): [../docs/guides/stack-completo-e-dados.md](../docs/guides/stack-completo-e-dados.md).
+
 ## Pré-requisitos
 
 - Docker Engine + **Docker Compose v2** (`docker compose`).

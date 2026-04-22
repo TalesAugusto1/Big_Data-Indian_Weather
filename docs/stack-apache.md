@@ -74,6 +74,10 @@ flowchart TB
 - Mount `./data` → `/dataset` (ro) e `./scripts` → `/opt/smoke` (ro) nos serviços Spark no **`docker-compose.yml`**.
 - Smoke: **`scripts/t012_smoke_parquet.py`** + secção **T012** em **`docker/README.md`** (URI `file:///dataset/...`, opção HDFS com `docker cp`).
 
+## Guia operacional completo
+
+Para **passo a passo desde o clone** (pré-requisitos, mounts, T012, HDFS opcional, `down -v`): [guides/stack-completo-e-dados.md](guides/stack-completo-e-dados.md). Índice geral da pasta `docs/`: [README.md](README.md).
+
 ## Referências
 
 - Repositório de referência (compose Hadoop): [big-data-europe/docker-hadoop](https://github.com/big-data-europe/docker-hadoop)

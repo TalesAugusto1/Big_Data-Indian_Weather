@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
-T012 smoke test: read Parquet inside Spark container (bind mount /dataset).
+Smoke T012: ler Parquet no contentor Spark (bind mount em /dataset).
 
-Env:
-  T012_PARQUET_PATH  Path inside container (default: /dataset/Indian_Weather_Dataset.parquet)
-  T012_FULL_COUNT    Set to "1" to run df.count() (full scan — slow on huge files)
+Variáveis de ambiente:
+  T012_PARQUET_PATH  Caminho dentro do contentor (por defeito: /dataset/Indian_Weather_Dataset.parquet)
+  T012_FULL_COUNT    Definir como "1" para executar df.count() (varredura completa — lenta em ficheiros enormes)
 """
 from __future__ import annotations
 
@@ -18,10 +18,10 @@ def main() -> int:
 
     if not os.path.exists(path):
         print(
-            f"ERROR: Parquet not found at {path!r}.\n"
-            "Mount repo ./data to /dataset (see docker-compose.yml) and ensure the file exists, e.g.:\n"
+            f"ERRO: Parquet não encontrado em {path!r}.\n"
+            "Monte ./data do repositório em /dataset (ver docker-compose.yml) e confirme que o ficheiro existe, p.ex.:\n"
             "  data/Indian_Weather_Dataset.parquet\n"
-            "  or set T012_PARQUET_PATH=/dataset/archive/Indian_Weather_Dataset.parquet",
+            "  ou defina T012_PARQUET_PATH=/dataset/archive/Indian_Weather_Dataset.parquet",
             file=sys.stderr,
         )
         return 1
@@ -29,7 +29,7 @@ def main() -> int:
     try:
         from pyspark.sql import SparkSession  # type: ignore[import-untyped]
     except ImportError as e:
-        print(f"ERROR: PySpark not available: {e}", file=sys.stderr)
+        print(f"ERRO: PySpark indisponível: {e}", file=sys.stderr)
         return 1
 
     spark = (
@@ -41,19 +41,19 @@ def main() -> int:
 
     try:
         df = spark.read.parquet(path)
-        print("=== Schema ===")
+        print("=== Esquema ===")
         df.printSchema()
-        print("=== Sample (1 row) ===")
+        print("=== Amostra (1 linha) ===")
         df.show(1, vertical=False, truncate=80)
         n = df.limit(1).count()
         print(f"=== limit(1).count() === {n}")
         if os.environ.get("T012_FULL_COUNT") == "1":
             total = df.count()
-            print(f"=== FULL count() === {total}")
+            print(f"=== count() completo === {total}")
     finally:
         spark.stop()
 
-    print("T012 smoke: OK")
+    print("Smoke T012: OK")
     return 0
 
 
