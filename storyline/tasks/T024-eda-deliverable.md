@@ -8,7 +8,7 @@ status: Done
 depends_on: [T021, T022, T023]
 artifacts:
   - notebooks/eda.ipynb
-  - notebooks/figuras/*.png
+  - notebooks/figuras/eda_*.png (geradas localmente ao executar o notebook)
 ```
 
 ## Objetivo
