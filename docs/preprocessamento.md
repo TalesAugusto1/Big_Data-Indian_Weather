@@ -8,6 +8,22 @@ Este documento **especifica** o tratamento de dados para o Indian Weather, alinh
 - Implementação futura recomendada: **Apache Spark** (DataFrame API, `MLlib` / `PipelineModel`) e/ou **PyArrow Compute** no host para transformações tabulares.
 - Este ficheiro é a **especificação**; o código de materialização pode seguir na **T024** (EDA) ou num script dedicado posterior, desde que respeite fit só em treino.
 
+## Perfil empírico (nulos, cardinalidade, min/max)
+
+As decisões de **missing** e **alta cardinalidade** devem ser **validadas com números** obtidos sobre o Parquet real (taxa de nulos, ordem de grandeza de distintos, etc.).
+
+1. Correr no host (só **PyArrow**, sem pandas/sklearn):
+
+   ```powershell
+   python scripts\profile_parquet.py -i data\Indian_Weather_Dataset.parquet
+   ```
+
+2. Copiar a **tabela Markdown** gerada no stdout para uma secção “**Medições**” no relatório da **T024** ou para um anexo em `organization/evidencias/` se a equipa preferir.
+
+3. Ajustar este documento (`preprocessamento.md`) se os dados reais mostrarem colunas problemáticas (ex.: coluna quase toda nula → remover; cardinalidade extrema → subir K ou reforçar `__OTHER__`).
+
+Detalhes dos flags: [`scripts/profile_parquet.md`](../scripts/profile_parquet.md).
+
 ## Fluxo lógico (fit vs transform)
 
 ```mermaid
@@ -115,5 +131,6 @@ Referência de colunas observadas no schema do dataset (smoke Spark / documenta�
 ## Ligações
 
 - Split temporal: [scripts/split_temporal.md](../scripts/split_temporal.md)
+- Perfil Parquet: [scripts/profile_parquet.md](../scripts/profile_parquet.md)
 - Aprovação e alvo: [organization/evidencias/aprovacao.md](../organization/evidencias/aprovacao.md)
 - Tarefa: [storyline/tasks/T022-preprocessamento-pipeline.md](../storyline/tasks/T022-preprocessamento-pipeline.md)

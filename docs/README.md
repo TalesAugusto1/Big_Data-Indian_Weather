@@ -18,6 +18,7 @@ Comece aqui se for novo no repositório. A documentação do projeto está **em 
 - [preprocessamento.md](preprocessamento.md) — especificação do pipeline (T022): missing, categorias, scaling, fit só em treino.
 - [organization/evidencias/aprovacao.md](../organization/evidencias/aprovacao.md) — dataset e alvo (T020).
 - [scripts/split_temporal.md](../scripts/split_temporal.md) — split temporal (T021).
+- [scripts/profile_parquet.md](../scripts/profile_parquet.md) — perfil de nulos/distintos no Parquet (PyArrow).
 
 ## Por tarefa (laboratório M01)
 

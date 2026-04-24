@@ -12,6 +12,7 @@ Esta pasta regista **desenvolvimento relevante** no repositório (funcionalidade
 
 | Data | Slug | Resumo |
 |------|------|--------|
+| 2026-04-26 | [m02-profile-parquet](2026-04-26-m02-profile-parquet.md) | M02: `profile_parquet.py` (PyArrow) — nulos, distintos, min/max; ligação na T022/preprocessamento |
 | 2026-04-25 | [m02-t022-preprocessamento](2026-04-25-m02-t022-preprocessamento.md) | M02 / T022: `docs/preprocessamento.md` — pipeline, fit treino, Parquet `data/processed/` |
 | 2026-04-24 | [m02-t021-split-pyarrow-only](2026-04-24-m02-t021-split-pyarrow-only.md) | M02 / T021: refactor `split_temporal.py` só PyArrow; removido pandas do `requirements.txt` |
 | 2026-04-23 | [m02-t021-split-temporal](2026-04-23-m02-t021-split-temporal.md) | M02 / T021: `split_temporal.py`, split 70/15/15 por `datetime`, anti-leakage |

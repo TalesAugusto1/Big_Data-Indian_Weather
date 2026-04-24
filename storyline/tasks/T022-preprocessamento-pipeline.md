@@ -23,7 +23,7 @@ Documentar transformações: **missing values**, **encoding** de categóricas (`
 
 ## Evidence
 
-- Especificação completa: [docs/preprocessamento.md](../../docs/preprocessamento.md) (tabela coluna→transformação, TOP-K + `__OTHER__`, fit/transform, caminhos `data/processed/*.parquet`, restrição sem pandas/sklearn).
+- Especificação completa: [docs/preprocessamento.md](../../docs/preprocessamento.md) (tabela coluna→transformação, TOP-K + `__OTHER__`, fit/transform, caminhos `data/processed/*.parquet`, restrição sem pandas/sklearn; secção de **perfil empírico** com [`scripts/profile_parquet.py`](../../scripts/profile_parquet.py)).
 
 ## Links
 
