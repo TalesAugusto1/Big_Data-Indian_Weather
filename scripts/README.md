@@ -22,6 +22,7 @@ Instruções completas de venv: [README.md](../README.md#ambiente-virtual-python
 
 ## Ligações úteis
 
+- Pipeline de pré-processamento (M02 / T022): [../docs/preprocessamento.md](../docs/preprocessamento.md)
 - Stack Docker e smoke T012: [../docker/README.md](../docker/README.md)
 - Guia operacional aprofundado: [../docs/guides/stack-completo-e-dados.md](../docs/guides/stack-completo-e-dados.md)
 - Changelog CSV→Parquet: [../docs/changelog/2026-04-21-csv-to-parquet-streaming.md](../docs/changelog/2026-04-21-csv-to-parquet-streaming.md)

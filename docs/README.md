@@ -13,15 +13,17 @@ Comece aqui se for novo no repositório. A documentação do projeto está **em 
 | [../core.md](../core.md) | Rubrica da disciplina |
 | [changelog/README.md](changelog/README.md) | Entradas de changelog por funcionalidade |
 
+## M02 (EDA e pré-processamento)
+
+- [preprocessamento.md](preprocessamento.md) — especificação do pipeline (T022): missing, categorias, scaling, fit só em treino.
+- [organization/evidencias/aprovacao.md](../organization/evidencias/aprovacao.md) — dataset e alvo (T020).
+- [scripts/split_temporal.md](../scripts/split_temporal.md) — split temporal (T021).
+
 ## Por tarefa (laboratório M01)
 
 1. **Compreender a decisão de stack** → [stack-apache.md](stack-apache.md) (T010).
 2. **Correr Hadoop + Spark no Docker** → [guides/stack-completo-e-dados.md](guides/stack-completo-e-dados.md) + [../docker/README.md](../docker/README.md) (T011–T012).
 3. **Converter CSV para Parquet no host** → [../README.md](../README.md) (secção Python) e [changelog/2026-04-21-csv-to-parquet-streaming.md](changelog/2026-04-21-csv-to-parquet-streaming.md).
-
-## Evidências (curso)
-
-- [../organization/evidencias/aprovacao.md](../organization/evidencias/aprovacao.md) — M02 / T020: aprovação do dataset e definição do alvo.
 
 ## Scripts (`scripts/`)
 
