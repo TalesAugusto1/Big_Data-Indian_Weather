@@ -132,5 +132,6 @@ Referência de colunas observadas no schema do dataset (smoke Spark / documenta�
 
 - Split temporal: [scripts/split_temporal.md](../scripts/split_temporal.md)
 - Perfil Parquet: [scripts/profile_parquet.md](../scripts/profile_parquet.md)
+- Desequilíbrio de classes: [imbalance.md](imbalance.md) (T023)
 - Aprovação e alvo: [organization/evidencias/aprovacao.md](../organization/evidencias/aprovacao.md)
 - Tarefa: [storyline/tasks/T022-preprocessamento-pipeline.md](../storyline/tasks/T022-preprocessamento-pipeline.md)

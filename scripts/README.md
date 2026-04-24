@@ -7,6 +7,7 @@ Ferramentas de linha de comandos para preparar dados e validar o stack Docker (M
 | [`csv_to_parquet.py`](csv_to_parquet.py) | **Host** (Python + venv) | [csv_to_parquet.md](csv_to_parquet.md) |
 | [`split_temporal.py`](split_temporal.py) | **Host** (Python + venv; M02 / T021) | [split_temporal.md](split_temporal.md) |
 | [`profile_parquet.py`](profile_parquet.py) | **Host** (PyArrow; perfil nulos/distintos) | [profile_parquet.md](profile_parquet.md) |
+| [`rain_label_counts.py`](rain_label_counts.py) | **Host** (PyArrow; M02 / T023) | [rain_label_counts.md](rain_label_counts.md) |
 | [`t012_smoke_parquet.py`](t012_smoke_parquet.py) | **Dentro do contentor Spark** (via `spark-submit`) | [t012_smoke_parquet.md](t012_smoke_parquet.md) |
 
 ## Pré-requisito comum (host)
@@ -25,6 +26,7 @@ Instruções completas de venv: [README.md](../README.md#ambiente-virtual-python
 
 - Pipeline de pré-processamento (M02 / T022): [../docs/preprocessamento.md](../docs/preprocessamento.md)
 - Perfil do Parquet (fundamentar missing/cardinalidade): [profile_parquet.md](profile_parquet.md)
+- Desequilíbrio `rain_label` (T023): [rain_label_counts.md](rain_label_counts.md) e [../docs/imbalance.md](../docs/imbalance.md)
 - Stack Docker e smoke T012: [../docker/README.md](../docker/README.md)
 - Guia operacional aprofundado: [../docs/guides/stack-completo-e-dados.md](../docs/guides/stack-completo-e-dados.md)
 - Changelog CSV→Parquet: [../docs/changelog/2026-04-21-csv-to-parquet-streaming.md](../docs/changelog/2026-04-21-csv-to-parquet-streaming.md)

@@ -4,7 +4,7 @@
 id: T023
 story: S02
 milestone: M02
-status: Todo
+status: Done
 depends_on: [T020, T022]
 artifacts:
   - docs/imbalance.md ou seção no notebook
@@ -16,13 +16,14 @@ Se a tarefa for **classificação**, analisar distribuição do alvo e aplicar o
 
 ## Checklist
 
-- [ ] Gráfico ou tabela de frequências por classe (classificação).
-- [ ] Decisão final da estratégia e parâmetros (ex.: `class_weight='balanced'`).
-- [ ] Para regressão: declarar N/A e focar em outliers/skew se relevante.
+- [x] Gráfico ou tabela de frequências por classe (classificação) — tabela em [`docs/imbalance.md`](../../docs/imbalance.md) + script [`scripts/rain_label_counts.py`](../../scripts/rain_label_counts.py).
+- [x] Decisão final da estratégia e parâmetros (ex.: `class_weight='balanced'`) — pesos no **Spark** no treino; threshold secundário na validação (ver `imbalance.md`).
+- [x] Para regressão: declarar N/A e focar em outliers/skew se relevante — **N/A**: o alvo acordado é **classificação** (`rain_label`, T020).
 
 ## Evidence
 
-- Link para figura ou números copiados aqui após concluir a task.
+- Documento: [`docs/imbalance.md`](../../docs/imbalance.md) (frequências reais, interpretação PT-BR, estratégia e o que não fazer).
+- Script de contagens: [`scripts/rain_label_counts.py`](../../scripts/rain_label_counts.py) e [`scripts/rain_label_counts.md`](../../scripts/rain_label_counts.md).
 
 ## Links
 

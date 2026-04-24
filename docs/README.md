@@ -19,6 +19,7 @@ Comece aqui se for novo no repositório. A documentação do projeto está **em 
 - [organization/evidencias/aprovacao.md](../organization/evidencias/aprovacao.md) — dataset e alvo (T020).
 - [scripts/split_temporal.md](../scripts/split_temporal.md) — split temporal (T021).
 - [scripts/profile_parquet.md](../scripts/profile_parquet.md) — perfil de nulos/distintos no Parquet (PyArrow).
+- [imbalance.md](imbalance.md) — desequilíbrio de `rain_label` e estratégia (T023).
 
 ## Por tarefa (laboratório M01)
 
