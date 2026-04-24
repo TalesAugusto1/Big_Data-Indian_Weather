@@ -2,7 +2,7 @@
 
 ```yaml
 id: M02
-status: Doing
+status: Done
 ```
 
 ## Objetivo
