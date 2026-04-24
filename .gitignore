@@ -2,3 +2,5 @@ data/
 .venv/
 .cursor/
 .env
+__pycache__/
+*.py[cod]
