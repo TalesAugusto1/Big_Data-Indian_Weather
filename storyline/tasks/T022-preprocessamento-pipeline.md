@@ -4,7 +4,7 @@
 id: T022
 story: S02
 milestone: M02
-status: Todo
+status: Done
 depends_on: [T021]
 artifacts:
   - docs/preprocessamento.md ou notebook
@@ -16,14 +16,14 @@ Documentar transformações: **missing values**, **encoding** de categóricas (`
 
 ## Checklist
 
-- [ ] Lista de colunas: tipo → transformação.
-- [ ] Estratégia para textos de alta cardinalidade (agrupar, hash, target encoding — com cuidado a leakage).
-- [ ] Onde o pipeline é **fit** (somente treino) e **transform** (val/teste).
-- [ ] Formato de saída (ex.: Parquet particionado, Delta, CSV interno).
+- [x] Lista de colunas: tipo → transformação.
+- [x] Estratégia para textos de alta cardinalidade (agrupar, hash, target encoding — com cuidado a leakage).
+- [x] Onde o pipeline é **fit** (somente treino) e **transform** (val/teste).
+- [x] Formato de saída (ex.: Parquet particionado, Delta, CSV interno).
 
 ## Evidence
 
-- Diagrama simples ou bullet list aceito; preferir link para código/notebook.
+- Especificação completa: [docs/preprocessamento.md](../../docs/preprocessamento.md) (tabela coluna→transformação, TOP-K + `__OTHER__`, fit/transform, caminhos `data/processed/*.parquet`, restrição sem pandas/sklearn; secção de **perfil empírico** com [`scripts/profile_parquet.py`](../../scripts/profile_parquet.py)).
 
 ## Links
 

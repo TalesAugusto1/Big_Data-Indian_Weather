@@ -4,11 +4,11 @@
 id: T024
 story: S02
 milestone: M02
-status: Todo
+status: Done
 depends_on: [T021, T022, T023]
 artifacts:
-  - notebooks/eda.ipynb   # caminho sugerido; ajustar ao repo
-  - figuras exportadas (png) opcional
+  - notebooks/eda.ipynb
+  - notebooks/figuras/eda_*.png (geradas localmente ao executar o notebook)
 ```
 
 ## Objetivo
@@ -17,14 +17,14 @@ Produzir **análise exploratória** com visualizações (distribuições, sazona
 
 ## Checklist
 
-- [ ] Cobrir pelo menos: distribuição do alvo, 2–3 relações feature–alvo, correlação entre preditores.
-- [ ] Explorar dimensão temporal (`hour`, `month`, `datetime`).
-- [ ] Listar 3–5 **insights acionáveis** para a Parte 3.
-- [ ] Referenciar caminhos de figuras no repositório ou no notebook.
+- [x] Cobrir pelo menos: distribuição do alvo, 2–3 relações feature–alvo, correlação entre preditores.
+- [x] Explorar dimensão temporal (`hour`, `month`, `datetime`).
+- [x] Listar 3–5 **insights acionáveis** para a Parte 3.
+- [x] Referenciar caminhos de figuras no repositório ou no notebook.
 
 ## Evidence
 
-- Link para notebook ou relatório Markdown/PDF.
+- Notebook: [../../notebooks/eda.ipynb](../../notebooks/eda.ipynb) (PT-BR; PyArrow + Matplotlib; figuras em `notebooks/figuras/` com prefixo `eda_*.png`).
 
 ## Links
 

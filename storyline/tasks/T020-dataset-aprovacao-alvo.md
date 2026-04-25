@@ -4,7 +4,7 @@
 id: T020
 story: S02
 milestone: M02
-status: Todo
+status: Done
 depends_on: []
 artifacts:
   - organization/evidencias/aprovacao.md   # opcional: criar pasta se a equipe usar
@@ -17,14 +17,14 @@ Formalizar o uso do **Indian Weather** (ou dataset aprovado), definir **variáve
 
 ## Checklist
 
-- [ ] Citar caminho e tamanho em disco do dataset (ex.: `data/Indian_Weather_Dataset.parquet`).
-- [ ] Definir alvo (ex.: `rain_label`, `precip_mm`) e métrica principal planejada.
-- [ ] Registrar data e forma da aprovação (e-mail, Teams, folha assinada — conforme política).
-- [ ] Se ainda pendente, marcar status **Blocked** e descrever próximo passo.
+- [x] Citar caminho e tamanho em disco do dataset (ex.: `data/Indian_Weather_Dataset.parquet`).
+- [x] Definir alvo (ex.: `rain_label`, `precip_mm`) e métrica principal planejada.
+- [x] Registrar data e forma da aprovação (e-mail, Teams, folha assinada — conforme política).
+- [x] Se ainda pendente, marcar status **Blocked** e descrever próximo passo. *(N/A — aprovado.)*
 
 ## Evidence
 
-- Texto curto “Aprovado em … por …” ou anexo referenciado.
+- Registo formal: [organization/evidencias/aprovacao.md](../../organization/evidencias/aprovacao.md) (dataset, tamanhos, alvo `rain_label`, classificação, métrica F1 macro, aprovação docente 2026-04-22).
 
 ## Links
 
