@@ -4,6 +4,9 @@
 Com base nas definições da tarefa T020, o projeto consiste em um problema de **Classificação**, tendo como variável alvo a coluna `rain_label`. 
 
 **Métrica Principal:** F1-Score (macro).
+
+A escolha do F1-Score foi feita pois o dataset, apresenta um grande desbalanceamento de classes, com isso a métrica de acurácia pode apresentar erros (enviesado). Utilizando o F1-Score podemos ter uma melhor precisão na avaliação final.
+
 ## 2. Protocolo de Divisão (Split)
 Para garantir a reprodutibilidade e que todos os modelos da Fase 3 sejam comparáveis, o seguinte protocolo está congelado:
 * **Proporção:** 70% Treino / 30% Teste.
