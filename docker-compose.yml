@@ -173,6 +173,30 @@ services:
       retries: 12
       start_period: 90s
 
+  notebook:
+    image: jupyter/pyspark-notebook:spark-3.2.1
+    container_name: spark-notebook
+    restart: unless-stopped
+    command: >
+      start-notebook.sh
+      --NotebookApp.token=''
+      --NotebookApp.password=''
+    volumes:
+      - ./:/home/jovyan/work
+      - ./data:/dataset:ro
+    ports:
+      - "${JUPYTER_PORT:-8888}:8888"
+      - "4040-4050:4040-4050"
+    environment:
+      - SPARK_MASTER=spark://spark-master:7077
+      - SPARK_DRIVER_HOST=spark-notebook
+      - REPO_ROOT=/home/jovyan/work
+    networks:
+      - bigdata
+    depends_on:
+      spark-master:
+        condition: service_healthy
+
 volumes:
   hadoop_namenode:
   hadoop_datanode:
