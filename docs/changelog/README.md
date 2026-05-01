@@ -12,6 +12,7 @@ Esta pasta regista **desenvolvimento relevante** no repositório (funcionalidade
 
 | Data | Slug | Resumo |
 |------|------|--------|
+| 2026-04-30 | [m03-t031-decision-tree-eda-regressao](2026-04-30-m03-t031-decision-tree-eda-regressao.md) | M03 / T031: `decision_tree.ipynb` (Spark DecisionTreeRegressor + métricas T030); EDA ampliado com figuras temporais, correlações e insights para `temperature_C` |
 | 2026-04-27 | [m03-t030-regressao-temperature](2026-04-27-m03-t030-regressao-temperature.md) | M03 / T030: baseline migrado para regressao em `temperature_C` com MAE/RMSE/R2 e comparativo sazonal (`hour`, `month`, `hour+month`) |
 | 2026-04-27 | [m02-t023-imbalance](2026-04-27-m02-t023-imbalance.md) | M02 / T023: `docs/imbalance.md` + `rain_label_counts.py` (frequências `rain_label`, estratégia Spark) |
 | 2026-04-26 | [m03-t030-baseline-metricas](2026-04-26-m03-t030-baseline-metricas.md) | M03 / T030: docs/metricas.md + calcula_base.py (Métrica F1, Split 70/30, Baseline 0.9540) |
