@@ -12,6 +12,7 @@ Esta pasta regista **desenvolvimento relevante** no repositório (funcionalidade
 
 | Data | Slug | Resumo |
 |------|------|--------|
+| 2026-04-28 | [m03-notebook-train-numpy-nn](2026-04-28-m03-notebook-train-numpy-nn.md) | M03 / T033: `notebooks/train_numpy_nn.ipynb` — MLP NumPy+PyArrow, split T021, path robusto, correção loss `nan` |
 | 2026-04-27 | [m02-t023-imbalance](2026-04-27-m02-t023-imbalance.md) | M02 / T023: `docs/imbalance.md` + `rain_label_counts.py` (frequências `rain_label`, estratégia Spark) |
 | 2026-04-26 | [m02-profile-parquet](2026-04-26-m02-profile-parquet.md) | M02: `profile_parquet.py` (PyArrow) — nulos, distintos, min/max; ligação na T022/preprocessamento |
 | 2026-04-25 | [m02-t022-preprocessamento](2026-04-25-m02-t022-preprocessamento.md) | M02 / T022: `docs/preprocessamento.md` — pipeline, fit treino, Parquet `data/processed/` |

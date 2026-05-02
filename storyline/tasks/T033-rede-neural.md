@@ -23,7 +23,8 @@ Treinar uma **rede neural** para o mesmo alvo, com arquitetura e treino **docume
 
 ## Evidence
 
-- Curva de loss opcional; métricas finais obrigatórias.
+- Notebook (treino host, NumPy + PyArrow): [../../notebooks/train_numpy_nn.ipynb](../../notebooks/train_numpy_nn.ipynb). Changelog: [../../docs/changelog/2026-04-28-m03-notebook-train-numpy-nn.md](../../docs/changelog/2026-04-28-m03-notebook-train-numpy-nn.md).
+- Curva de loss opcional; métricas finais obrigatórias (completar checklist T033 ao fechar M03).
 
 ## Links
 
