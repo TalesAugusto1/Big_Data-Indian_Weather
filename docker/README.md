@@ -64,6 +64,7 @@ Os `healthcheck` do Compose usam **HTTP** nos endpoints locais do container (`cu
 | MapReduce History Server | http://localhost:8188 | Timeline / histórico |
 | Spark Master | http://localhost:8080 | UI; porta **7077** Spark |
 | Spark Worker | http://localhost:8081 | UI |
+| Jupyter (PySpark) | http://localhost:8888 | Notebook no contentor `spark-notebook`; repo montado; usa `SPARK_MASTER` da stack (ver serviço `notebook` no Compose). Porta: `JUPYTER_PORT` no `.env`. |
 
 Portas podem ser alteradas via variáveis no `.env` (ver [.env.example](../.env.example)).
 
