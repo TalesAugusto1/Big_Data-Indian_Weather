@@ -16,14 +16,14 @@ Definir **métricas principais e secundárias** coerentes com regressão ou clas
 
 ## Checklist
 
-- [ ] Escolher métrica principal (MAE/RMSE ou F1/AUC, etc.) e justificar em 1 parágrafo.
-- [ ] Implementar baseline trivial reproduzível.
-- [ ] Congelar seeds e caminhos de dados usados na Parte 3.
-- [ ] Definir limite de tempo ou amostra se treino for inviável em laptop (com aprovação da equipe/docente).
+- [x] Escolher métrica principal (MAE/RMSE ou F1/AUC, etc.) e justificar em 1 parágrafo.
+- [x] Implementar baseline trivial reproduzível.
+- [x] Congelar seeds e caminhos de dados usados na Parte 3.
+- [x] Definir limite de tempo ou amostra se treino for inviável em laptop (com aprovação da equipe/docente).
 
-## Evidence
+## Evidencia
 
-- Números do baseline no conjunto de validação/teste.
+- Números do baseline extraídos e registrados em docs/metricas.md. F1-Score: 0.9540 (Classe Majoritária: 0).
 
 ## Links
 

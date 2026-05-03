@@ -2,6 +2,7 @@
 
 Comece aqui se for novo no repositório. A documentação do projeto está **em português** (este índice, `README.md` na raiz, guias em `docs/guides/`, `docs/stack-apache.md`, `docker/README.md`).
 
+
 ## Ler primeiro
 
 | Documento | O que aprende |
