@@ -97,8 +97,8 @@ flowchart LR
 Para tarefas e modelos **Spark / MLlib** (ex.: `notebooks/decision_tree.ipynb`), o fluxo alinhado ao laboratório é:
 
 1. Com o stack no ar (`docker compose up -d` e serviços **healthy**), abra no browser **[http://localhost:8888](http://localhost:8888)** (serviço `notebook` no Compose; porta configurável com `JUPYTER_PORT` no `.env`).
-2. Execute os notebooks **a partir desse Jupyter**: o contentor usa o **Spark Standalone** da stack (`spark://spark-master:7077`), o mesmo mount de `./data` e a rede interna do Compose — não o mesmo ambiente que correr células só no kernel Python **local** do VS Code/Cursor no host.
-3. A UI do **Spark Master** em [http://localhost:8080](http://localhost:8080) ajuda a confirmar aplicações e recursos.
+2. Execute os notebooks **a partir desse Jupyter**: o contentor monta **`./data`** em **`/dataset`** (read-only). Por defeito o Compose define **`SPARK_MASTER=local[4]`** só para o serviço `notebook`, ou seja o Spark corre **no próprio contentor Jupyter** (evita executors no `spark-worker` que falham por falta de RAM em portáteis). O mesmo serviço passa **`SPARK_DRIVER_MEMORY=3g`** (e limites associados) para evitar **OOM** do driver em `fit()`; ajuste no `.env` se tiver RAM de sobra. **`DTR_NOTEBOOK_MAX_ROWS`** (por defeito **400000** no Compose) limita o `decision_tree.ipynb` antes de `randomSplit`, que de outro modo varre o Parquet inteiro. Para **Standalone** com executors no worker, defina **`JUPYTER_SPARK_MASTER=spark://spark-master:7077`** e recrie o contentor (ver `.env.example` e [docker/README.md](docker/README.md) troubleshooting **#7**).
+3. A UI do **Spark Master** em [http://localhost:8080](http://localhost:8080) ajuda a ver aplicações quando estiver em modo cluster; em `local[4]` o processo aparece sobretudo no próprio host do driver (Jupyter).
 
 O fluxo de branch, PR e evidências em `storyline/` (incluindo esta convenção) está em **[.cursor/skills/milestone-branch-workflow/SKILL.md](.cursor/skills/milestone-branch-workflow/SKILL.md)**.
 

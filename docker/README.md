@@ -64,7 +64,7 @@ Os `healthcheck` do Compose usam **HTTP** nos endpoints locais do container (`cu
 | MapReduce History Server | http://localhost:8188 | Timeline / histórico |
 | Spark Master | http://localhost:8080 | UI; porta **7077** Spark |
 | Spark Worker | http://localhost:8081 | UI |
-| Jupyter (PySpark) | http://localhost:8888 | Notebook no contentor `spark-notebook`; repo montado; usa `SPARK_MASTER` da stack (ver serviço `notebook` no Compose). Porta: `JUPYTER_PORT` no `.env`. |
+| Jupyter (PySpark) | http://localhost:8888 | Notebook no contentor `spark-notebook`; repo em `/home/jovyan/work`, dados em `/dataset`. Por defeito **`SPARK_MASTER=local[4]`** e **`SPARK_DRIVER_MEMORY=3g`** (e limites associados; ver `.env.example`). Para `spark://spark-master:7077`, ver `JUPYTER_SPARK_MASTER`. Porta: `JUPYTER_PORT` no `.env`. |
 
 Portas podem ser alteradas via variáveis no `.env` (ver [.env.example](../.env.example)).
 
@@ -90,6 +90,18 @@ curl -fsS http://localhost:8080/ | Out-Null
 
 4. **NodeManager ou RM reiniciam em loop**  
    Memória insuficiente: reduza ainda mais `YARN_CONF_yarn_nodemanager_resource_memory___mb` e limites `MAPRED_CONF_*` em `docker/hadoop.env`, depois `docker compose down -v` e suba de novo (apaga dados HDFS).
+
+5. **`Lost executor … Remote RPC client disassociated. Likely due to containers exceeding thresholds`** (logs do `spark-notebook` ou do worker)  
+   Os JVMs dos **executors** no `spark-worker` foram mortos (quase sempre **OOM** do Docker). Com **um só worker**, muitos executores com **2g** cada esgotam a RAM. O serviço `notebook` no `docker-compose.yml` define `SPARK_EXECUTOR_MEMORY`, `SPARK_EXECUTOR_CORES` e `SPARK_CORES_MAX` (sobrescrevíveis no `.env`); o `decision_tree.ipynb` lê-as no modo cluster. Aumente a RAM do Docker Desktop ou baixe esses valores.
+
+6. **Py4J / `show()` a falhar no Jupyter com `spark://spark-master:7077`**  
+   Por defeito o Compose passa **`SPARK_MASTER=local[4]`** ao contentor `notebook` (Spark só no Jupyter, sem executors no worker). Se tiver definido **`JUPYTER_SPARK_MASTER=spark://spark-master:7077`** e continuar a perder executors, aumente RAM ao Docker ou volte ao defeito `local[4]` (apague a variável do `.env` e `docker compose up -d --force-recreate notebook`).
+
+7. **`Connection reset by peer` / Py4J em `fit()` no `decision_tree.ipynb`**  
+   Com **`local[4]`**, o **driver** partilha a JVM com os “executors” locais; pedir **8g** de heap num contentor com **2–4 GiB** de limite mata o processo Java durante o treino. O Compose define por defeito **`SPARK_DRIVER_MEMORY=3g`**, **`SPARK_DRIVER_MAX_RESULT_SIZE=768m`**, **`SPARK_DEFAULT_PARALLELISM=4`** e **`SPARK_SQL_SHUFFLE_PARTITIONS=8`** (sobrescrevíveis no `.env`). Depois de alterar: `docker compose up -d --force-recreate notebook`, **reiniciar o kernel** e voltar a correr desde a primeira célula.
+
+8. **Mesmo erro no `train_vec.limit(3).show()` (preview)**  
+   **`randomSplit`** força uma passagem por **todas** as linhas de `model_df`; com **`persist(MEMORY_AND_DISK)`** no dataset completo o driver facilmente rebenta. O notebook passou a usar **`DISK_ONLY`** e o Compose define **`DTR_NOTEBOOK_MAX_ROWS`** (por defeito **400000**) para limitar o volume antes do split. Para o dataset inteiro no Docker, aumente RAM e/ou suba o limite no `.env`; no host, `MAX_ROWS` no notebook continua a mandar.
 
 ## T012 — Dados montados + smoke Parquet (Spark)
 
