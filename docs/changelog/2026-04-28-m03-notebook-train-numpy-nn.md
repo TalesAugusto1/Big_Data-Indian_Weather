@@ -43,4 +43,4 @@ python scripts\split_temporal.py -i data\Indian_Weather_Dataset.parquet
 ## Follow-ups
 
 - Registar **tempo de treino** e hardware na tarefa **T033** quando fechar critérios.
-- Alinhar alvo e métricas ao protocolo **T030** se o projeto migrar totalmente para regressão (`temperature_C`).
+- ~~Alinhar alvo e métricas ao protocolo **T030**~~ Feito: ver [2026-05-02-m03-t033-neural-network-temperature-regression.md](2026-05-02-m03-t033-neural-network-temperature-regression.md).

@@ -23,7 +23,7 @@ Treinar uma **rede neural** para o mesmo alvo, com arquitetura e treino **docume
 
 ## Evidence
 
-- Notebook (treino host, NumPy + PyArrow): [../../notebooks/neural_network_numpy_training.ipynb](../../notebooks/neural_network_numpy_training.ipynb). Changelog: [../../docs/changelog/2026-04-28-m03-notebook-train-numpy-nn.md](../../docs/changelog/2026-04-28-m03-notebook-train-numpy-nn.md).
+- Notebook (treino host, NumPy + PyArrow): [../../notebooks/neural_network_numpy_training.ipynb](../../notebooks/neural_network_numpy_training.ipynb). Changelogs: regressão `temperature_C` (T030) — [../../docs/changelog/2026-05-02-m03-t033-neural-network-temperature-regression.md](../../docs/changelog/2026-05-02-m03-t033-neural-network-temperature-regression.md); histórico BCE — [../../docs/changelog/2026-04-28-m03-notebook-train-numpy-nn.md](../../docs/changelog/2026-04-28-m03-notebook-train-numpy-nn.md).
 - Curva de loss opcional; métricas finais obrigatórias (completar checklist T033 ao fechar M03).
 
 ## Links
