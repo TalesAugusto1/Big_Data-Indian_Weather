@@ -7,3 +7,5 @@ __pycache__/
 
 # Jupyter autosave backups (não versionar)
 .ipynb_checkpoints/
+*.py[cod]venv/
+venv/
