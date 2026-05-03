@@ -9,6 +9,7 @@ Enunciado / rubrica da disciplina: [core.md](core.md).
 - [Início rápido: arrancar o stack completo (Docker + Hadoop + Spark)](#inicio-rapido)
   - [Mapa do stack (visão geral)](#mapa-stack)
   - [Requisitos rápidos](#requisitos-rapidos)
+  - [Notebooks PySpark no Jupyter (Docker)](#notebooks-jupyter-docker)
   - [Onde ler a seguir](#onde-ler-seguir)
 - [Planeamento do projeto: marcos, histórias e tarefas](#planeamento-projeto)
   - [Como seguir o fluxo de trabalho](#fluxo-trabalho)
@@ -71,7 +72,7 @@ flowchart LR
 3. **Criar a pasta de dados** (o Compose faz bind-mount no Spark). PowerShell: `New-Item -ItemType Directory -Force -Path .\data | Out-Null`. Coloque **`Indian_Weather_Dataset.parquet`** em `data/` (ou em `data/archive/` e defina `T012_PARQUET_PATH` ao correr o smoke). A pasta `data/` está **no `.gitignore`**; tem de fornecer o conjunto de dados localmente ou gerar Parquet a partir do CSV (ver [Ambiente virtual Python](#ambiente-python) abaixo).
 4. **Opcional:** copiar variáveis por defeito: `Copy-Item .env.example .env` (PowerShell) ou `cp .env.example .env` (macOS/Linux). Edite `.env` só se precisar de portas diferentes no host ou de outro `CLUSTER_NAME`.
 5. **Pull e arranque:** `docker compose pull` e depois `docker compose up -d`. Aguarde pelos healthchecks: `docker compose ps` deve mostrar **healthy** nos serviços dependentes (a primeira subida pode demorar vários minutos).
-6. **Verificar UIs:** [HDFS NameNode](http://localhost:9870), [YARN ResourceManager](http://localhost:8088), [Spark Master](http://localhost:8080). Tabela completa: [docker/README.md](docker/README.md#uis-e-health-checks).
+6. **Verificar UIs:** [HDFS NameNode](http://localhost:9870), [YARN ResourceManager](http://localhost:8088), [Spark Master](http://localhost:8080), [Jupyter](http://localhost:8888) (PySpark no contentor). Tabela completa: [docker/README.md](docker/README.md#uis-e-health-checks).
 7. **Smoke T012 (ler Parquet no Spark):** quando `spark-master` estiver **healthy**:
 
    ```powershell
@@ -88,6 +89,18 @@ flowchart LR
 > O comando `docker compose down -v` **apaga volumes** de dados do cluster (além de parar os contentores). Use só quando quiser repor o HDFS sem dados locais no volume.
 
 8. **Parar:** `docker compose down` (mantém volumes HDFS). Para apagar volumes de dados do cluster: `docker compose down -v`.
+
+<a id="notebooks-jupyter-docker"></a>
+
+### Notebooks PySpark no Jupyter (Docker)
+
+Para tarefas e modelos **Spark / MLlib** (ex.: `notebooks/decision_tree.ipynb`), o fluxo alinhado ao laboratório é:
+
+1. Com o stack no ar (`docker compose up -d` e serviços **healthy**), abra no browser **[http://localhost:8888](http://localhost:8888)** (serviço `notebook` no Compose; porta configurável com `JUPYTER_PORT` no `.env`).
+2. Execute os notebooks **a partir desse Jupyter**: o contentor monta **`./data`** em **`/dataset`** (read-only). Por defeito o Compose define **`SPARK_MASTER=local[4]`** só para o serviço `notebook`, ou seja o Spark corre **no próprio contentor Jupyter** (evita executors no `spark-worker` que falham por falta de RAM em portáteis). O mesmo serviço passa **`SPARK_DRIVER_MEMORY=3g`** (e limites associados) para evitar **OOM** do driver em `fit()`; ajuste no `.env` se tiver RAM de sobra. **`DTR_NOTEBOOK_MAX_ROWS`** (por defeito **400000** no Compose) limita o `decision_tree.ipynb` antes de `randomSplit`, que de outro modo varre o Parquet inteiro. Para **Standalone** com executors no worker, defina **`JUPYTER_SPARK_MASTER=spark://spark-master:7077`** e recrie o contentor (ver `.env.example` e [docker/README.md](docker/README.md) troubleshooting **#7**).
+3. A UI do **Spark Master** em [http://localhost:8080](http://localhost:8080) ajuda a ver aplicações quando estiver em modo cluster; em `local[4]` o processo aparece sobretudo no próprio host do driver (Jupyter).
+
+O fluxo de branch, PR e evidências em `storyline/` (incluindo esta convenção) está em **[.cursor/skills/milestone-branch-workflow/SKILL.md](.cursor/skills/milestone-branch-workflow/SKILL.md)**.
 
 <a id="onde-ler-seguir"></a>
 
