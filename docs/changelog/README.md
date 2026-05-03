@@ -12,7 +12,7 @@ Esta pasta regista **desenvolvimento relevante** no repositório (funcionalidade
 
 | Data | Slug | Resumo |
 |------|------|--------|
-| 2026-04-28 | [m03-notebook-train-numpy-nn](2026-04-28-m03-notebook-train-numpy-nn.md) | M03 / T033: `notebooks/train_numpy_nn.ipynb` — MLP NumPy+PyArrow, split T021, path robusto, correção loss `nan` |
+| 2026-04-28 | [m03-notebook-train-numpy-nn](2026-04-28-m03-notebook-train-numpy-nn.md) | M03 / T033: `notebooks/neural_network_numpy_training.ipynb` — MLP NumPy+PyArrow, split T021, path robusto, correção loss `nan` |
 | 2026-05-02 | [m03-t031-decision-tree-notebook-robustness](2026-05-02-m03-t031-decision-tree-notebook-robustness.md) | M03 / T031: `setuptools`; `decision_tree.ipynb` (JAVA_HOME, `SPARK_MASTER`, `_reset_spark_if_stale`, `coalesce`, env driver/shuffle); Compose `notebook` (`SPARK_DRIVER_MEMORY`, `DTR_NOTEBOOK_MAX_ROWS`, `persist` DISK_ONLY); README / `docker/README` troubleshooting #7–#8; comentários `docker/hadoop.env` |
 | 2026-04-30 | [m03-t031-decision-tree-eda-regressao](2026-04-30-m03-t031-decision-tree-eda-regressao.md) | M03 / T031: `decision_tree.ipynb` (Spark DecisionTreeRegressor + métricas T030); EDA ampliado com figuras temporais, correlações e insights para `temperature_C` |
 | 2026-04-27 | [m03-t030-regressao-temperature](2026-04-27-m03-t030-regressao-temperature.md) | M03 / T030: baseline migrado para regressao em `temperature_C` com MAE/RMSE/R2 e comparativo sazonal (`hour`, `month`, `hour+month`) |

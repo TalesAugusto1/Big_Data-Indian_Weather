@@ -4,3 +4,6 @@ data/
 .env
 __pycache__/
 *.py[cod]
+
+# Jupyter autosave backups (não versionar)
+.ipynb_checkpoints/

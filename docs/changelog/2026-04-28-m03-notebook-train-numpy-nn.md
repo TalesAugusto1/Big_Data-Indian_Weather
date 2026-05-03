@@ -1,4 +1,4 @@
-# Changelog: M03 — Notebook `train_numpy_nn` (rede NumPy + PyArrow)
+# Changelog: M03 — Notebook `neural_network_numpy_training` (rede NumPy + PyArrow)
 
 **Data:** 2026-04-28  
 **Área:** Storyline M03 / S03 / Parte 3 (rede neural)  
@@ -7,7 +7,7 @@
 
 ## Resumo
 
-Notebook **[`notebooks/train_numpy_nn.ipynb`](../../notebooks/train_numpy_nn.ipynb)** com MLP em **NumPy** (BCE + sigmoid na saída), leitura em batches com **PyArrow Dataset**, **one-hot** para `state` / `city` / `crops`, normalização com estatísticas **só no treino**, e avaliação no val/teste. O trabalho corrige falhas que geravam **loss `nan`**, avisos de **média em slice vazio** e desalinhamento com o **split temporal T021**.
+Notebook **[`notebooks/neural_network_numpy_training.ipynb`](../../notebooks/neural_network_numpy_training.ipynb)** com MLP em **NumPy** (BCE + sigmoid na saída), leitura em batches com **PyArrow Dataset**, **one-hot** para `state` / `city` / `crops`, normalização com estatísticas **só no treino**, e avaliação no val/teste. O trabalho corrige falhas que geravam **loss `nan`**, avisos de **média em slice vazio** e desalinhamento com o **split temporal T021**.
 
 ## Motivação
 
@@ -19,7 +19,7 @@ Notebook **[`notebooks/train_numpy_nn.ipynb`](../../notebooks/train_numpy_nn.ipy
 
 | Item | Detalhe |
 |------|---------|
-| [`notebooks/train_numpy_nn.ipynb`](../../notebooks/train_numpy_nn.ipynb) | `resolve_data_parquet()`; `temporal_split_filters()` alinhado ao T021; `get_stats()` com `nanmean`/`nanstd` e erro se treino vazio; `to_xy` com `dtype` inteiro nos índices one-hot, `nan_to_num` nas features; `bce` com `nanmean`; **MLP** com atualização de **biases** no `backward`; inicialização `default_rng(42)`; treino com erro explícito se não houver batches ou loss não finita. |
+| [`notebooks/neural_network_numpy_training.ipynb`](../../notebooks/neural_network_numpy_training.ipynb) | `resolve_data_parquet()`; `temporal_split_filters()` alinhado ao T021; `get_stats()` com `nanmean`/`nanstd` e erro se treino vazio; `to_xy` com `dtype` inteiro nos índices one-hot, `nan_to_num` nas features; `bce` com `nanmean`; **MLP** com atualização de **biases** no `backward`; inicialização `default_rng(42)`; treino com erro explícito se não houver batches ou loss não finita. |
 
 ## Como verificar
 
