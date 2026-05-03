@@ -1,4 +1,4 @@
-# Changelog: streaming de CSV para Parquet (PyArrow)
+    # Changelog: streaming de CSV para Parquet (PyArrow)
 
 **Data:** 2026-04-21  
 **Área:** ferramentas / pipeline de dados  
