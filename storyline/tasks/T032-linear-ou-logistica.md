@@ -16,10 +16,10 @@
 
   ## Checklist
 
-  - [ ] Confirmar alinhamento regressão ↔ Linear / classificação ↔ Logística.
-  - [ ] Documentar penalização (`l2`, `l1`, `elasticnet`) e solver.
-  - [ ] Avaliar com o mesmo protocolo de **T030**.
-  - [ ] Se coeficientes forem interpretados, anotar limites (correlação vs causalidade).
+  - [X] Confirmar alinhamento regressão ↔ Linear / classificação ↔ Logística.
+  - [X] Documentar penalização (`l2`, `l1`, `elasticnet`) e solver.
+  - [X] Avaliar com o mesmo protocolo de **T030**.
+  - [X] Se coeficientes forem interpretados, anotar limites (correlação vs causalidade).
 
   ## Evidence
 
