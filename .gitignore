@@ -3,4 +3,5 @@ data/
 .cursor/
 .env
 __pycache__/
-*.py[cod]
+*.py[cod]venv/
+venv/
