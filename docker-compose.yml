@@ -173,6 +173,45 @@ services:
       retries: 12
       start_period: 90s
 
+  notebook:
+    image: jupyter/pyspark-notebook:spark-3.2.1
+    container_name: spark-notebook
+    restart: unless-stopped
+    command: >
+      start-notebook.sh
+      --NotebookApp.token=''
+      --NotebookApp.password=''
+    volumes:
+      - ./:/home/jovyan/work
+      - ./data:/dataset:ro
+    ports:
+      - "${JUPYTER_PORT:-8888}:8888"
+      - "4040-4050:4040-4050"
+    environment:
+      # Por defeito local[4]: Spark corre só no contentor Jupyter (Parquet em /dataset está
+      # montado aqui; evita executors no spark-worker que morrem por OOM com pouca RAM no Docker).
+      # Para usar o Standalone real (executors no worker): no .env defina
+      # JUPYTER_SPARK_MASTER=spark://spark-master:7077 e faça docker compose up -d --force-recreate notebook
+      - SPARK_MASTER=${JUPYTER_SPARK_MASTER:-local[4]}
+      - SPARK_DRIVER_HOST=spark-notebook
+      - REPO_ROOT=/home/jovyan/work
+      # Em local[4] o driver = todo o heap; 8g rebenta contentors pequenos → fit() mata a JVM (Connection reset).
+      - SPARK_DRIVER_MEMORY=${SPARK_DRIVER_MEMORY:-3g}
+      - SPARK_DRIVER_MAX_RESULT_SIZE=${SPARK_DRIVER_MAX_RESULT_SIZE:-768m}
+      - SPARK_DEFAULT_PARALLELISM=${SPARK_DEFAULT_PARALLELISM:-4}
+      - SPARK_SQL_SHUFFLE_PARTITIONS=${SPARK_SQL_SHUFFLE_PARTITIONS:-8}
+      # Corta linhas antes de randomSplit/assemble (notebook le DTR_NOTEBOOK_MAX_ROWS na 1.ª celula).
+      - DTR_NOTEBOOK_MAX_ROWS=${DTR_NOTEBOOK_MAX_ROWS:-400000}
+      # Usados apenas quando JUPYTER_SPARK_MASTER aponta ao cluster (spark://…)
+      - SPARK_EXECUTOR_MEMORY=${SPARK_EXECUTOR_MEMORY:-1g}
+      - SPARK_EXECUTOR_CORES=${SPARK_EXECUTOR_CORES:-1}
+      - SPARK_CORES_MAX=${SPARK_CORES_MAX:-4}
+    networks:
+      - bigdata
+    depends_on:
+      spark-master:
+        condition: service_healthy
+
 volumes:
   hadoop_namenode:
   hadoop_datanode:
