@@ -188,11 +188,8 @@ services:
       - "${JUPYTER_PORT:-8888}:8888"
       - "4040-4050:4040-4050"
     environment:
-      # Por defeito local[4]: Spark corre só no contentor Jupyter (Parquet em /dataset está
-      # montado aqui; evita executors no spark-worker que morrem por OOM com pouca RAM no Docker).
-      # Para usar o Standalone real (executors no worker): no .env defina
-      # JUPYTER_SPARK_MASTER=spark://spark-master:7077 e faça docker compose up -d --force-recreate notebook
-      - SPARK_MASTER=${JUPYTER_SPARK_MASTER:-local[4]}
+      - JUPYTER_SPARK_MASTER=spark://spark-master:7077
+      # - SPARK_MASTER=${JUPYTER_SPARK_MASTER:-local[4]}
       - SPARK_DRIVER_HOST=spark-notebook
       - REPO_ROOT=/home/jovyan/work
       # Em local[4] o driver = todo o heap; 8g rebenta contentors pequenos → fit() mata a JVM (Connection reset).
