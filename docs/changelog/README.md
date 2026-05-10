@@ -12,6 +12,7 @@ Esta pasta regista **desenvolvimento relevante** no repositório (funcionalidade
 
 | Data | Slug | Resumo |
 |------|------|--------|
+| 2026-05-07 | [m03-t033-pyspark-mllib-mlp](2026-05-07-m03-t033-pyspark-mllib-mlp.md) | M03 / T033: `neural_network_pyspark_mllib.ipynb` — PySpark `MultilayerPerceptronClassifier`, `QuantileDiscretizer`, métricas °C (T030); alinhado ao `decision_tree.ipynb` |
 | 2026-05-02 | [m03-t033-neural-network-temperature-regression](2026-05-02-m03-t033-neural-network-temperature-regression.md) | M03 / T033: `neural_network_numpy_training.ipynb` — alvo `temperature_C`, MSE + saída linear, MAE/RMSE/R² (T030); sem `temperature_C` nas features |
 | 2026-05-03 | [m03-t032-linear-regression](2026-05-03-m03-t032-linear-regression.md) | M03 / T032: `linear_regression.ipynb` (PySpark + Ridge Regularization); Pipeline com `VectorAssembler` e `StandardScaler`; RMSE: 1.6437, MAE: 1.1375 em 46M de registros. |
 | 2026-05-02 | [m03-t031-decision-tree-notebook-robustness](2026-05-02-m03-t031-decision-tree-notebook-robustness.md) | M03 / T031: `setuptools`; `decision_tree.ipynb` (JAVA_HOME, `SPARK_MASTER`, `_reset_spark_if_stale`, `coalesce`, env driver/shuffle); Compose `notebook` (`SPARK_DRIVER_MEMORY`, `DTR_NOTEBOOK_MAX_ROWS`, `persist` DISK_ONLY); README / `docker/README` troubleshooting #7–#8; comentários `docker/hadoop.env` |
